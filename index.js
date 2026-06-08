@@ -307,11 +307,15 @@ document.addEventListener('DOMContentLoaded', () => {
     stampTrigger.classList.toggle('stamped');
   });
   
+  // --- FORMSPREE CONFIGURATION ---
+  // To enable email delivery, create a free form at https://formspree.io and paste your Form ID here.
+  const FORMSPREE_FORM_ID = ''; 
+
   // Form Dispatch Logic
   contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
-    // Collect data to make it real
+    // Collect data
     const name = document.getElementById('form-name').value;
     const email = document.getElementById('form-email').value;
     const msg = document.getElementById('form-msg').value;
@@ -321,8 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Force the stamp overlay active
     stampTrigger.classList.add('stamped');
     
-    // 2. Play stamp sound (visual feedback)
-    // Add visual classes to trigger the red cancel postal marks
+    // 2. Trigger red cancel postal marks
     cancellationMark.style.opacity = '1';
     cancellationMark.style.transform = 'scale(1) rotate(-8deg)';
     
@@ -333,26 +336,63 @@ document.addEventListener('DOMContentLoaded', () => {
     sendBtn.disabled = true;
     sendBtn.style.backgroundColor = 'var(--accent-green)';
     sendBtn.style.color = '#000';
-    sendBtn.innerHTML = `<span>DISPATCHED! FLY SAFE ✈</span>`;
+    sendBtn.innerHTML = `<span>DISPATCHING... ✈</span>`;
+
+    // 4. Send API Request (if configured)
+    if (FORMSPREE_FORM_ID) {
+      fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ name, email, message: msg })
+      })
+      .then(response => {
+        if (response.ok) {
+          sendBtn.innerHTML = `<span>DISPATCHED! FLY SAFE ✈</span>`;
+          handleReset();
+        } else {
+          throw new Error('Formspree dispatch failed');
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        sendBtn.style.backgroundColor = '#f43f5e'; // Red error feedback
+        sendBtn.style.color = '#fff';
+        sendBtn.innerHTML = `<span>DISPATCH FAILED ✖</span>`;
+        setTimeout(() => {
+          resetBtn();
+        }, 3000);
+      });
+    } else {
+      // Mock mode
+      setTimeout(() => {
+        sendBtn.innerHTML = `<span>DISPATCHED! FLY SAFE ✈</span>`;
+        handleReset();
+      }, 1000);
+    }
     
-    // Mock successful API post
-    console.log("Nomad Postcard Data Dispatched:", { name, email, msg });
-    
-    // Reset after delay and flip postcard back
-    setTimeout(() => {
-      contactForm.reset();
-      stampTrigger.classList.remove('stamped');
-      cancellationMark.style.opacity = '0';
-      cancellationMark.style.transform = 'scale(1.5) rotate(-15deg)';
-      
+    function resetBtn() {
       sendBtn.disabled = false;
       sendBtn.style.backgroundColor = 'var(--text-primary)';
       sendBtn.style.color = 'var(--bg-primary)';
       sendBtn.innerHTML = originalBtnText;
-      
-      // Flip back to front
-      postcardCard.classList.remove('flipped');
-    }, 4000);
+    }
+
+    function handleReset() {
+      // Reset after delay and flip postcard back
+      setTimeout(() => {
+        contactForm.reset();
+        stampTrigger.classList.remove('stamped');
+        cancellationMark.style.opacity = '0';
+        cancellationMark.style.transform = 'scale(1.5) rotate(-15deg)';
+        resetBtn();
+        
+        // Flip back to front
+        postcardCard.classList.remove('flipped');
+      }, 3000);
+    }
   });
   
 });
