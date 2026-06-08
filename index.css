@@ -1,0 +1,1810 @@
+/* --- MODERN WEB DESIGN SYSTEM & GLOBAL RESET --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom Properties for Theming */
+:root {
+  /* Default Dark Mode */
+  --bg-primary: #070b13;
+  --bg-secondary: #0d1220;
+  --bg-card: rgba(13, 19, 33, 0.7);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --accent-orange: #ff6b35;
+  --accent-green: #0df57e;
+  --accent-blue: #00e5ff;
+  --accent-blue-rgb: 0, 229, 255;
+  --accent-orange-rgb: 255, 107, 53;
+  --glow-color: rgba(255, 107, 53, 0.25);
+  --glass-blur: blur(14px);
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --border-glow: 0 0 10px rgba(0, 229, 255, 0.15);
+}
+
+/* Explicit Light Mode Override */
+.light-mode {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.8);
+  --border-color: rgba(15, 23, 42, 0.08);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --accent-orange: #ea580c;
+  --accent-green: #16a34a;
+  --accent-blue: #0284c7;
+  --accent-blue-rgb: 2, 132, 199;
+  --accent-orange-rgb: 234, 88, 12;
+  --glow-color: rgba(234, 88, 12, 0.15);
+  --card-shadow: 0 8px 32px 0 rgba(148, 163, 184, 0.2);
+  --border-glow: 0 0 10px rgba(2, 132, 199, 0.1);
+}
+
+/* Base Body Setup */
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Selection and Accent Override */
+::selection {
+  background-color: var(--accent-orange);
+  color: #fff;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-orange);
+}
+
+/* --- UTILITY CLASSES --- */
+.text-orange { color: var(--accent-orange); }
+.text-green { color: var(--accent-green); }
+.text-blue { color: var(--accent-blue); }
+.text-right { text-align: right; }
+
+.badge-pulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.badge-pulse::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+  animation: pulse-glow 1.5s infinite;
+}
+
+.shadow-glow {
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.shadow-glow:hover {
+  box-shadow: var(--card-shadow), var(--border-glow);
+  border-color: rgba(var(--accent-blue-rgb), 0.3);
+}
+
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+/* Core Animations */
+@keyframes pulse-glow {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 12px var(--accent-green); }
+  100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+@keyframes map-pin-pulse {
+  0% { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+@keyframes plane-fly {
+  0% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  100% { transform: translateX(-5px); }
+}
+
+/* --- DASHBOARD HEADER --- */
+.dashboard-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: rgba(var(--bg-primary) == #070b13 ? 7 : 248, 10, 19, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 1000;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.hud-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.compass-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--accent-orange);
+  animation: rotate-compass 10s infinite linear;
+}
+
+@keyframes rotate-compass {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.dashboard-ticker {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.ticker-item {
+  display: flex;
+  gap: 6px;
+  border-right: 1px solid var(--border-color);
+  padding-right: 1.5rem;
+}
+.ticker-item:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.ticker-label {
+  color: var(--text-secondary);
+}
+
+.ticker-value {
+  font-weight: 600;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-toggle-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.theme-toggle-btn:hover {
+  background: var(--border-color);
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+}
+
+.sun-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.mobile-menu-btn span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+/* Mobile Nav Drawer */
+.mobile-nav {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+  gap: 1rem;
+  z-index: 999;
+  transform: translateY(-150%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.mobile-nav.active {
+  transform: translateY(0);
+}
+
+.mobile-nav-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+.mobile-nav-link:hover {
+  color: var(--accent-orange);
+}
+
+/* --- DESKTOP FLOATING SIDE NAV --- */
+.desktop-side-nav {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-num {
+  border: 1px solid var(--border-color);
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.nav-text {
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.nav-links a:hover .nav-text,
+.nav-links a.active .nav-text {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.nav-links a:hover .nav-num,
+.nav-links a.active .nav-num {
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+  background: rgba(var(--accent-orange-rgb), 0.05);
+}
+
+/* --- MAIN CONTENT & SECTIONS --- */
+main {
+  margin-top: 60px;
+}
+
+section {
+  min-height: calc(100vh - 60px);
+  padding: 4rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.section-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  margin-bottom: 3rem;
+  border-left: 3px solid var(--accent-orange);
+  padding-left: 1rem;
+}
+
+.section-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--accent-orange);
+  letter-spacing: 2px;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-top: 0.25rem;
+  text-transform: uppercase;
+}
+
+/* --- SECTION 1: HERO / BOARDING PASS --- */
+.hero-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: center;
+}
+
+/* Passport Styles */
+.passport-book {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 950px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 1.6 / 1;
+}
+
+.passport-page {
+  flex: 1;
+  padding: 2.2rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.page-bio {
+  border-right: 1px solid var(--border-color);
+  position: relative;
+}
+
+/* Center binding folder effect for passport booklet */
+.page-bio::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 15px;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.25));
+  pointer-events: none;
+}
+
+.page-visa::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 15px;
+  height: 100%;
+  background: linear-gradient(to left, transparent, rgba(0, 0, 0, 0.25));
+  pointer-events: none;
+}
+
+/* Security fine line grid watermarks */
+.passport-watermark-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(circle, var(--accent-blue) 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
+}
+
+.page-visa .passport-watermark-bg {
+  background: repeating-linear-gradient(45deg, var(--accent-blue) 0px, var(--accent-blue) 1px, transparent 1px, transparent 16px),
+              repeating-linear-gradient(-45deg, var(--accent-orange) 0px, var(--accent-orange) 1px, transparent 1px, transparent 16px);
+  background-size: 32px 32px;
+}
+
+.passport-page-header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 1;
+}
+
+.passport-header-country {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+}
+
+.passport-header-doc {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+.passport-bio-content {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.2rem;
+  z-index: 1;
+}
+
+.passport-photo-container {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.passport-photo-svg {
+  width: 130px;
+  height: 130px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.passport-photo-sig {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--accent-blue);
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+.passport-details-grid {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.details-row-double {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.details-row-triple {
+  display: grid;
+  grid-template-columns: 0.6fr 0.6fr 1.8fr;
+  gap: 10px;
+}
+
+.details-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.passport-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.passport-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.passport-value-small {
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-top: 2px;
+  word-break: break-all;
+}
+
+.passport-link {
+  color: var(--accent-blue);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.passport-link:hover {
+  color: var(--accent-orange);
+}
+
+/* Machine Readable Zone (MRZ) formatting */
+.passport-mrz {
+  margin-top: 1.5rem;
+  border-top: 1px dashed var(--border-color);
+  padding-top: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 2.5px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  user-select: none;
+  font-weight: 500;
+  z-index: 1;
+}
+
+/* Right Visa Page Stamps */
+.visa-stamps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin: auto 0;
+  z-index: 1;
+}
+
+.visa-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Visa Stamp Shapes */
+.visa-stamp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6px;
+  text-decoration: none;
+  user-select: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.visa-stamp:hover {
+  transform: scale(1.05) rotate(1deg);
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+a.visa-stamp:hover {
+  opacity: 1 !important;
+}
+
+.stamp-octagonal {
+  width: 95px;
+  height: 95px;
+  border: 2px double currentColor;
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+.stamp-circular {
+  width: 95px;
+  height: 95px;
+  border: 2px dashed currentColor;
+  border-radius: 50%;
+}
+
+.stamp-rectangular {
+  width: 120px;
+  height: 70px;
+  border: 2px solid currentColor;
+  border-radius: 6px;
+  transform: rotate(-3deg);
+}
+
+.stamp-elliptical {
+  width: 115px;
+  height: 70px;
+  border: 2px solid currentColor;
+  border-radius: 50% / 30%;
+  transform: rotate(4deg);
+}
+
+.visa-stamp-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.45rem;
+  font-weight: 500;
+  opacity: 0.9;
+  letter-spacing: 0.5px;
+}
+
+.visa-stamp-main {
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin: 1px 0;
+  letter-spacing: 0.5px;
+}
+
+.visa-stamp-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.45rem;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+/* Colors for stamps to appear ink-pressed */
+.stamp-blue {
+  color: rgba(var(--accent-blue-rgb), 0.5);
+}
+.stamp-blue:hover {
+  color: var(--accent-blue);
+}
+
+.stamp-orange {
+  color: rgba(var(--accent-orange-rgb), 0.5);
+}
+.stamp-orange:hover {
+  color: var(--accent-orange);
+}
+
+.stamp-green {
+  color: rgba(13, 245, 126, 0.45);
+}
+.stamp-green:hover {
+  color: rgba(13, 245, 126, 0.85);
+}
+
+.visa-footer-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  z-index: 1;
+  margin-top: 1rem;
+}
+
+.visa-declaration {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  max-width: 90%;
+  line-height: 1.3;
+}
+
+.passport-enter-btn {
+  background: var(--accent-orange);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.2rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.passport-enter-btn:hover {
+  background: #ff5518;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+}
+
+.passport-enter-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+
+.hero-intro-text {
+  text-align: center;
+  max-width: 750px;
+}
+
+.hero-intro-text h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, var(--text-primary) 0%, rgba(var(--accent-blue-rgb), 1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-intro-text p {
+  color: var(--text-secondary);
+  font-size: 1.15rem;
+}
+
+/* --- SECTION 2: ABOUT / ITINERARY --- */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 2rem;
+}
+
+.card-header-accent {
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.8rem 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.manifest-no {
+  color: var(--text-secondary);
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.status-indicator::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.status-indicator.online::before {
+  background-color: var(--accent-green);
+  box-shadow: 0 0 6px var(--accent-green);
+}
+.status-indicator.location::before {
+  background-color: var(--accent-blue);
+  box-shadow: 0 0 6px var(--accent-blue);
+}
+
+/* Manifest Card Styling */
+.manifest-content {
+  padding: 2rem;
+  display: flex;
+  gap: 2rem;
+}
+
+.avatar-polaroid {
+  flex-shrink: 0;
+}
+
+.polaroid-frame {
+  background: #f8fafc;
+  padding: 10px;
+  padding-bottom: 24px;
+  border-radius: 4px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  transform: rotate(-3deg);
+  width: 160px;
+  color: #0f172a;
+}
+
+.avatar-svg {
+  width: 140px;
+  height: 140px;
+  border-radius: 2px;
+  background: #070b13;
+}
+
+.polaroid-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 10px;
+  letter-spacing: 0.5px;
+}
+
+.manifest-text {
+  flex-grow: 1;
+}
+
+.manifest-text h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.manifest-text p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.manifest-subheading {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent-orange);
+  letter-spacing: 1px;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 4px;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-tag {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-primary);
+}
+
+/* Map Card Styling */
+.map-container {
+  padding: 1rem;
+  position: relative;
+  background: rgba(0,0,0,0.2);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.world-map-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.map-land {
+  fill: var(--bg-primary);
+  stroke: var(--border-color);
+  stroke-width: 1.5;
+  transition: fill 0.3s ease;
+}
+
+.map-flight-arc {
+  fill: none;
+  stroke: rgba(0, 229, 255, 0.25);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+
+.map-pin {
+  cursor: pointer;
+}
+
+.pin-pulse {
+  fill: var(--accent-blue);
+  opacity: 0;
+  transform-origin: center;
+  animation: map-pin-pulse 2s infinite linear;
+  pointer-events: none;
+}
+
+.pin-dot {
+  fill: var(--accent-blue);
+  stroke: #fff;
+  stroke-width: 1.5;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.map-pin:hover .pin-dot,
+.map-pin.active .pin-dot {
+  fill: var(--accent-orange);
+  r: 6px;
+  filter: drop-shadow(0 0 6px var(--accent-orange));
+}
+
+.map-pin.active .pin-pulse {
+  fill: var(--accent-orange);
+}
+
+.map-info-readout {
+  padding: 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.map-info-readout h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--accent-blue);
+}
+
+.map-info-readout p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.readout-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+/* --- SECTION 3: TIMELINE / FLIGHT LOG --- */
+.timeline-container {
+  position: relative;
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+/* Vertical central lines */
+.timeline-route-line-bg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-color);
+  transform: translateX(-50%);
+}
+
+.timeline-route-line-active {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 0%;
+  background: linear-gradient(to bottom, var(--accent-blue), var(--accent-orange));
+  transform: translateX(-50%);
+  transition: height 0.1s ease-out;
+}
+
+.scrolling-airplane {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-blue);
+  transform: translate(-50%, -50%) rotate(90deg);
+  transition: top 0.1s ease-out, transform 0.1s ease-out;
+  z-index: 10;
+}
+.scrolling-airplane svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Timeline stops */
+.timeline-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 6rem;
+  position: relative;
+  width: 100%;
+}
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-badge {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  z-index: 5;
+  transition: all 0.3s ease;
+}
+
+.timeline-item.active .timeline-badge {
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+  box-shadow: 0 0 10px rgba(var(--accent-orange-rgb), 0.3);
+}
+
+.timeline-content-card {
+  width: 90%;
+  position: relative;
+  overflow: hidden;
+}
+
+.stop-left .timeline-content-card {
+  grid-column: 1;
+  justify-self: end;
+}
+
+.stop-right .timeline-content-card {
+  grid-column: 2;
+  justify-self: start;
+}
+
+.card-body-content {
+  padding: 1.5rem;
+}
+
+.role-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.company-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.achievements-list {
+  list-style: none;
+  margin-top: 1rem;
+}
+
+.achievements-list li {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  position: relative;
+  padding-left: 15px;
+  margin-bottom: 6px;
+}
+.achievements-list li::before {
+  content: '➔';
+  position: absolute;
+  left: 0;
+  color: var(--accent-orange);
+  font-size: 0.75rem;
+}
+
+/* Passport Stamp Effect */
+.passport-stamp {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-family: 'JetBrains Mono', monospace;
+  text-align: center;
+  border-radius: 50%;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: scale(2) rotate(35deg);
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.timeline-item.active .passport-stamp {
+  opacity: 0.15;
+  transform: scale(1) rotate(-15deg);
+}
+
+.light-mode .timeline-item.active .passport-stamp {
+  opacity: 0.25;
+}
+
+.stamp-border {
+  border: 2px dashed currentColor;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 90px;
+  height: 90px;
+  justify-content: center;
+}
+
+.stamp-border-double {
+  border: 3px double currentColor;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 95px;
+  height: 95px;
+  justify-content: center;
+}
+
+.stamp-text-top {
+  font-size: 0.5rem;
+}
+
+.stamp-text-center {
+  font-size: 0.65rem;
+  font-weight: 800;
+  border-top: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  padding: 2px 0;
+}
+
+.stamp-text-bottom {
+  font-size: 0.5rem;
+}
+
+.stamp-blue {
+  color: var(--accent-blue);
+}
+
+.stamp-orange {
+  color: var(--accent-orange);
+}
+
+.stamp-green {
+  color: var(--accent-green);
+}
+
+/* --- SECTION 4: CONTACT / DIGITAL POSTCARD --- */
+.contact-section {
+  perspective: 1200px;
+}
+
+.postcard-wrapper {
+  width: 100%;
+  max-width: 750px;
+  height: 440px;
+  margin: 0 auto;
+  perspective: 1200px;
+}
+
+.postcard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.postcard.flipped {
+  transform: rotateY(180deg);
+}
+
+.postcard-front,
+.postcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* Front Styling */
+.postcard-front {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.postcard-art-container {
+  width: 100%;
+  flex-grow: 1;
+  overflow: hidden;
+  background: #000;
+}
+
+.postcard-illustration {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.postcard-front:hover .postcard-illustration {
+  transform: scale(1.02);
+}
+
+.postcard-front-instructions {
+  background: rgba(255,255,255,0.02);
+  border-top: 1px solid var(--border-color);
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.badge-hud {
+  color: var(--accent-orange);
+}
+
+.action-prompt {
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Back Styling (Form) */
+.postcard-back {
+  transform: rotateY(180deg);
+  background: var(--bg-card);
+}
+
+.postcard-form {
+  display: grid;
+  grid-template-columns: 1.2fr 8px 1fr;
+  height: 100%;
+  padding: 2rem;
+  gap: 1.5rem;
+}
+
+.postcard-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.form-instructions {
+  margin-bottom: 0.5rem;
+}
+
+.handwritten {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--accent-blue);
+}
+
+.handwritten-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  display: block;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.75rem;
+}
+
+.inline-fields {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.inline-fields .handwritten-input {
+  flex-grow: 1;
+}
+
+.handwritten-input {
+  background: none;
+  border: none;
+  border-bottom: 1px dashed var(--border-color);
+  padding: 6px 0;
+  color: var(--text-primary);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.1rem;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+.handwritten-input:focus {
+  outline: none;
+  border-bottom-style: solid;
+  border-color: var(--accent-orange);
+}
+
+textarea.handwritten-input {
+  resize: none;
+  line-height: 1.6;
+}
+
+.postcard-divider {
+  width: 1px;
+  height: 100%;
+  background: var(--border-color);
+  justify-self: center;
+}
+
+.postcard-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+/* Stamp Box */
+.postcard-stamp-box {
+  width: 90px;
+  height: 90px;
+  border: 1px dashed var(--border-color);
+  border-radius: 4px;
+  padding: 4px;
+  align-self: flex-end;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.postcard-stamp-box:hover {
+  border-color: var(--accent-orange);
+}
+
+.inner-dotted-border {
+  border: 1px dotted var(--border-color);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+.stamp-prompt {
+  font-size: 0.45rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-secondary);
+  line-height: 1.2;
+}
+
+.stamp-artwork {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.postcard-stamp-box.stamped .stamp-artwork {
+  opacity: 0.8;
+  transform: scale(1);
+}
+
+/* Cancellation / Cancellation stamp */
+.postal-cancellation-mark {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  top: -15px;
+  right: 15px;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(1.5) rotate(-15deg);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.postcard-stamp-box.stamped ~ .postal-cancellation-mark {
+  opacity: 1;
+  transform: scale(1) rotate(-8deg);
+}
+
+/* Address container */
+.address-container {
+  margin-top: 1rem;
+  padding-left: 10px;
+}
+
+.address-line {
+  margin-bottom: 4px;
+}
+
+.submit-postcard-btn {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border: none;
+  border-radius: 6px;
+  padding: 0.65rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 1rem;
+}
+.submit-postcard-btn:hover {
+  background: var(--accent-orange);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(var(--accent-orange-rgb), 0.2);
+}
+.submit-postcard-btn:active {
+  transform: translateY(0);
+}
+
+.send-plane-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.flip-back-btn {
+  background: none;
+  border: none;
+  color: var(--accent-blue);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  align-self: center;
+  text-decoration: underline;
+  margin-top: 0.5rem;
+}
+.flip-back-btn:hover {
+  color: var(--accent-orange);
+}
+
+/* --- DASHBOARD FOOTER --- */
+.dashboard-footer {
+  width: 100%;
+  height: 50px;
+  border-top: 1px solid var(--border-color);
+  background: rgba(var(--bg-primary) == #070b13 ? 7 : 248, 10, 19, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.footer-meta {
+  letter-spacing: 0.5px;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-links a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+.footer-links a:hover {
+  color: var(--accent-orange);
+}
+
+.footer-separator {
+  opacity: 0.3;
+}
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+@media (max-width: 900px) {
+  .pass-body {
+    grid-template-columns: 1fr;
+  }
+  
+  .passport-book {
+    flex-direction: column;
+    aspect-ratio: auto;
+  }
+  
+  .passport-page {
+    padding: 1.5rem;
+  }
+  
+  .page-bio {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .page-bio::after,
+  .page-visa::before {
+    display: none;
+  }
+  
+  .passport-bio-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .visa-row {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .timeline-route-line-bg,
+  .timeline-route-line-active {
+    left: 20px;
+  }
+  
+  .scrolling-airplane {
+    left: 20px;
+  }
+  
+  .timeline-badge {
+    left: 20px;
+  }
+  
+  .timeline-item {
+    grid-template-columns: 1fr;
+    margin-bottom: 4rem;
+  }
+  
+  .stop-left .timeline-content-card,
+  .stop-right .timeline-content-card {
+    grid-column: 1;
+    width: calc(100% - 40px);
+    margin-left: 40px;
+    justify-self: start;
+  }
+  
+  .desktop-side-nav {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  .hide-tablet {
+    display: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-header {
+    padding: 0 1rem;
+  }
+  
+  .hide-mobile {
+    display: none !important;
+  }
+  
+  .ticket-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .hero-intro-text h1 {
+    font-size: 2rem;
+  }
+  
+  .manifest-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  
+  .skill-tags {
+    justify-content: center;
+  }
+  
+  .postcard-wrapper {
+    height: auto;
+    min-height: 520px;
+  }
+  
+  .postcard-form {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .postcard-divider {
+    width: 100%;
+    height: 1px;
+  }
+  
+  .postcard-stamp-box {
+    align-self: center;
+  }
+  
+  .postal-cancellation-mark {
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -10px) scale(0.9) rotate(-8deg);
+  }
+  .postcard-stamp-box.stamped ~ .postal-cancellation-mark {
+    transform: translate(-50%, -10px) scale(0.95) rotate(-5deg);
+  }
+}
+
+/* Reduced Motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: 0s !important;
+    animation-duration: 0.1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.1ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .compass-icon,
+  .plane-mid-icon,
+  .pin-pulse,
+  .action-prompt {
+    animation: none !important;
+  }
+  
+  .timeline-route-line-active {
+    transition: none !important;
+  }
+  
+  .scrolling-airplane {
+    transition: none !important;
+  }
+}
+
+/* --- PAGE LOADER OVERLAY --- */
+.page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #070b13; /* Always dark for booting dashboard */
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+  color-scheme: dark;
+}
+
+.page-loader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  max-width: 400px;
+  width: 90%;
+}
+
+.loader-plane {
+  width: 48px;
+  height: 48px;
+  color: var(--accent-orange);
+  animation: loader-plane-float 2s infinite ease-in-out;
+  filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.4));
+}
+
+@keyframes loader-plane-float {
+  0%, 100% { transform: translateY(0) rotate(45deg); }
+  50% { transform: translateY(-8px) rotate(45deg); }
+}
+
+.loader-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #f1f5f9;
+  text-transform: uppercase;
+}
+
+.loader-console {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--accent-green);
+  text-align: left;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 1rem;
+  min-height: 85px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.console-line {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.loader-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loader-progress {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, var(--accent-orange), var(--accent-blue));
+  border-radius: 2px;
+  transition: width 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
+

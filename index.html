@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Personal Portfolio of Abhimanyu Patil - Software Engineer and Digital Nomad. Travel-inspired interactive web developer manifest.">
+  <title>Abhimanyu Patil | Digital Nomad Portfolio</title>
+  
+  <!-- Modern Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="index.css">
+  
+  <!-- Prevent FOUC for user-selected or system color scheme -->
+  <meta name="color-scheme" content="dark">
+  <script>
+    {
+      const colorScheme = localStorage.getItem("color-scheme") || "dark";
+      document.querySelector('meta[name="color-scheme"]').content = colorScheme;
+      if (colorScheme === 'light') {
+        document.documentElement.classList.add('light-mode');
+      }
+    }
+  </script>
+</head>
+<body>
+  
+  <!-- Page Loader Overlay -->
+  <div id="page-loader" class="page-loader">
+    <div class="loader-content">
+      <svg class="loader-plane" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L14 19v-5.5l8 2.5z"/>
+      </svg>
+      <h2 class="loader-title">NOMAD.DEV // BOOTING</h2>
+      <div class="loader-console">
+        <div class="console-line" id="loader-line-1">&gt; INITIALIZING NOMAD CORE_V1...</div>
+        <div class="console-line" id="loader-line-2" style="opacity: 0;">&gt; SYNCING FLIGHT TELEMETRY...</div>
+        <div class="console-line" id="loader-line-3" style="opacity: 0;">&gt; GENERATING PASSPORT CREDENTIALS...</div>
+      </div>
+      <div class="loader-progress-bar">
+        <div class="loader-progress" id="loader-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flight Instrument Status Banner (Header) -->
+  <header class="dashboard-header" id="header-nav">
+    <div class="hud-logo">
+      <svg class="compass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polygon points="16.24,7.76 14.12,14.12 7.76,16.24 9.88,9.88"></polygon>
+      </svg>
+      <span class="brand-title">NOMAD.DEV</span>
+    </div>
+    
+    <!-- Real-time Ticker Data -->
+    <div class="dashboard-ticker">
+      <div class="ticker-item">
+        <span class="ticker-label">FLIGHT:</span>
+        <span class="ticker-value text-orange">PATIL-2026</span>
+      </div>
+      <div class="ticker-item hide-mobile">
+        <span class="ticker-label">ROUTE:</span>
+        <span class="ticker-value">PNQ ➔ FRA ➔ DUB</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">STATUS:</span>
+        <span class="ticker-value text-green badge-pulse">IN TRANSIT</span>
+      </div>
+      <div class="ticker-item hide-tablet">
+        <span class="ticker-label">ALTITUDE:</span>
+        <span class="ticker-value" id="altitude-ticker">35,000 FT</span>
+      </div>
+      <div class="ticker-item hide-mobile">
+        <span class="ticker-label">COORDS:</span>
+        <span class="ticker-value" id="coords-ticker">28.5562° N, 77.1000° E</span>
+      </div>
+    </div>
+    
+    <!-- Time & Theme Controls -->
+    <div class="header-controls">
+      <div class="local-time-display">
+        <span class="ticker-label">UTC+5:30:</span>
+        <span class="ticker-value" id="clock-display">14:30:00</span>
+      </div>
+      <button class="theme-toggle-btn" aria-label="Toggle Light/Dark Theme" id="theme-toggle">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+      <button class="mobile-menu-btn" aria-label="Toggle Menu" id="mobile-menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Navigation -->
+  <nav class="mobile-nav" id="mobile-nav-drawer" aria-hidden="true">
+    <a href="#hero" class="mobile-nav-link">[ 01 : BOARDING ]</a>
+    <a href="#about" class="mobile-nav-link">[ 02 : ITINERARY ]</a>
+    <a href="#timeline" class="mobile-nav-link">[ 03 : FLIGHT LOG ]</a>
+    <a href="#contact" class="mobile-nav-link">[ 04 : POSTBOX ]</a>
+  </nav>
+
+  <!-- Desktop HUD Overlay (Floating Side Navigation) -->
+  <nav class="desktop-side-nav">
+    <ul class="nav-links">
+      <li><a href="#hero" class="active"><span class="nav-num">01</span><span class="nav-text">BOARDING</span></a></li>
+      <li><a href="#about"><span class="nav-num">02</span><span class="nav-text">ITINERARY</span></a></li>
+      <li><a href="#timeline"><span class="nav-num">03</span><span class="nav-text">FLIGHT LOG</span></a></li>
+      <li><a href="#contact"><span class="nav-num">04</span><span class="nav-text">POSTBOX</span></a></li>
+    </ul>
+  </nav>
+
+  <main>
+    
+    <!-- SECTION 1: HERO / BOARDING PASS -->
+    <section id="hero" class="hero-section">
+      <div class="hero-container">
+        
+        <!-- Passport Container -->
+        <div class="passport-book shadow-glow">
+          
+          <!-- Left Page: Biodata Page -->
+          <div class="passport-page page-bio">
+            <div class="passport-watermark-bg"></div>
+            
+            <div class="passport-page-header">
+              <span class="passport-header-country">REPUBLIC OF NOMADS</span>
+              <span class="passport-header-doc">PASSPORT // PASSEPORT</span>
+            </div>
+            
+            <div class="passport-bio-content">
+              <!-- Passport Photo Frame -->
+              <div class="passport-photo-container">
+                <svg class="passport-photo-svg" viewBox="0 0 200 200">
+                  <defs>
+                    <linearGradient id="passportSunset" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#ff7a00" stop-opacity="0.15" />
+                      <stop offset="100%" stop-color="#7a00ff" stop-opacity="0.15" />
+                    </linearGradient>
+                  </defs>
+                  <rect width="190" height="190" x="5" y="5" rx="4" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                  <!-- Background skyline watermark -->
+                  <circle cx="100" cy="100" r="95" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+                  <!-- Mountain grid watermark -->
+                  <path d="M5,170 L40,110 L80,150 L140,80 L195,170 Z" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <!-- Developer head outline in silhouette -->
+                  <path d="M60,200 C60,165 78,145 100,145 C122,145 140,165 140,200 Z" fill="none" stroke="var(--text-secondary)" stroke-width="2"/>
+                  <circle cx="100" cy="100" r="28" fill="none" stroke="var(--text-secondary)" stroke-width="2"/>
+                  <!-- Headphones -->
+                  <rect x="78" y="90" width="44" height="6" rx="3" fill="none" stroke="var(--text-secondary)" stroke-width="1.5"/>
+                  <circle cx="76" cy="102" r="8" fill="none" stroke="var(--text-secondary)" stroke-width="1.5"/>
+                  <circle cx="124" cy="102" r="8" fill="none" stroke="var(--text-secondary)" stroke-width="1.5"/>
+                  <!-- Light red stamp watermark overlay -->
+                  <circle cx="150" cy="60" r="35" fill="none" stroke="rgba(239, 68, 68, 0.25)" stroke-width="1.5" stroke-dasharray="4 2"/>
+                  <text x="150" y="63" font-family="'Outfit', sans-serif" font-weight="700" font-size="7" fill="rgba(239, 68, 68, 0.25)" text-anchor="middle" transform="rotate(-15 150 60)">PHOTO SECURE</text>
+                </svg>
+                <div class="passport-photo-sig">Patil Abhimanyu</div>
+              </div>
+              
+              <!-- Passport Details Grid -->
+              <div class="passport-details-grid">
+                <div class="details-row-triple">
+                  <div class="details-cell">
+                    <span class="passport-label">Type/Type</span>
+                    <span class="passport-value font-mono">P</span>
+                  </div>
+                  <div class="details-cell">
+                    <span class="passport-label">Code/Code</span>
+                    <span class="passport-value font-mono">IND</span>
+                  </div>
+                  <div class="details-cell">
+                    <span class="passport-label">Passport No./N° de passeport</span>
+                    <span class="passport-value font-mono text-orange">AP-2017-07</span>
+                  </div>
+                </div>
+                
+                <div class="details-cell">
+                  <span class="passport-label">Surname/Nom</span>
+                  <span class="passport-value">PATIL</span>
+                </div>
+                
+                <div class="details-cell">
+                  <span class="passport-label">Given Names/Prénoms</span>
+                  <span class="passport-value">ABHIMANYU</span>
+                </div>
+                
+                <div class="details-row-double">
+                  <div class="details-cell">
+                    <span class="passport-label">Role/Qualité</span>
+                    <span class="passport-value text-blue">SR. FULL STACK ENGINEER</span>
+                  </div>
+                  <div class="details-cell">
+                    <span class="passport-label">Experience/Transit</span>
+                    <span class="passport-value text-green">7 YEARS ACTIVE</span>
+                  </div>
+                </div>
+                
+                <div class="details-row-double">
+                  <div class="details-cell">
+                    <span class="passport-label">Email/Courriel</span>
+                    <span class="passport-value-small"><a href="mailto:abhimanyu.patil39@gmail.com" class="passport-link">abhimanyu.patil39@gmail.com</a></span>
+                  </div>
+                  <div class="details-cell">
+                    <span class="passport-label">Phone/Téléphone</span>
+                    <span class="passport-value-small"><a href="tel:+918446161390" class="passport-link">+91 8446161390</a></span>
+                  </div>
+                </div>
+                
+                <div class="details-row-double">
+                  <div class="details-cell">
+                    <span class="passport-label">Date of Issue/Date de délivrance</span>
+                    <span class="passport-value font-mono">02 JUN 2017</span>
+                  </div>
+                  <div class="details-cell">
+                    <span class="passport-label">Date of Expiry/Date d'expiration</span>
+                    <span class="passport-value font-mono">02 JUN 2037</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Machine Readable Zone (MRZ) -->
+            <div class="passport-mrz">
+              <div class="mrz-line">P&lt;INDENGINEER&lt;&lt;PATIL&lt;&lt;ABHIMANYU&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
+              <div class="mrz-line">AP201707&lt;4IND0106028M3706028&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;02</div>
+            </div>
+          </div>
+          
+          <!-- Right Page: Visa & Social Permits Page -->
+          <div class="passport-page page-visa">
+            <div class="passport-watermark-bg visa-grid"></div>
+            
+            <div class="passport-page-header">
+              <span class="passport-header-country">VISAS & ENTRY STAMPS</span>
+              <span class="passport-header-doc">AUTHORIZATIONS // SITES</span>
+            </div>
+            
+            <div class="visa-stamps-container">
+              <!-- Row 1: GitHub / LinkedIn Stamp Badges -->
+              <div class="visa-row">
+                <a href="https://github.com/abhimanyuPatil/" target="_blank" rel="noopener noreferrer" class="visa-stamp stamp-octagonal stamp-blue" aria-label="Visit GitHub Profile">
+                  <span class="visa-stamp-label">GRANTED ENTRY</span>
+                  <span class="visa-stamp-main">GITHUB.COM</span>
+                  <span class="visa-stamp-sub">PORTFOLIO // OK</span>
+                </a>
+                
+                <a href="https://www.linkedin.com/in/abhimanyu-patil91/" target="_blank" rel="noopener noreferrer" class="visa-stamp stamp-circular stamp-orange" aria-label="Visit LinkedIn Profile">
+                  <span class="visa-stamp-label">VISA DEPARTURE</span>
+                  <span class="visa-stamp-main">LINKEDIN</span>
+                  <span class="visa-stamp-sub">NETWORK APPROVED</span>
+                </a>
+              </div>
+              
+              <!-- Row 2: Tech stack stamps watermarks -->
+              <div class="visa-row">
+                <div class="visa-stamp stamp-rectangular stamp-green">
+                  <span class="visa-stamp-label">SECURITY CLEARANCE</span>
+                  <span class="visa-stamp-main">SAAS STACK</span>
+                  <span class="visa-stamp-sub">REACT / RAILS / AWS</span>
+                </div>
+                
+                <div class="visa-stamp stamp-elliptical stamp-blue">
+                  <span class="visa-stamp-label">IMMIGRATION</span>
+                  <span class="visa-stamp-main">NOMAD.DEV</span>
+                  <span class="visa-stamp-sub">PORT_80 // ARRIVED</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="visa-footer-action">
+              <p class="visa-declaration">The bearer of this passport is authorized to scale cloud environments, design robust APIs, and craft high-performance SaaS architectures.</p>
+              <button class="passport-enter-btn" id="hero-board-btn">
+                <span>ENTER PORTFOLIO</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Scrolling Intro text below Boarding Pass -->
+        <div class="hero-intro-text">
+          <h1>Crafting Scalable Enterprise SaaS & Cloud Applications</h1>
+          <p>I build high-performance web, cloud, and mobile architectures using React, TypeScript, Node.js, Ruby on Rails, Java/Spring Boot, and AWS.</p>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SECTION 2: ABOUT / TRAVEL ITINERARY -->
+    <section id="about" class="about-section">
+      <div class="section-container">
+        
+        <div class="section-header">
+          <span class="section-subtitle">// TRAVEL MANIFEST</span>
+          <h2 class="section-title">Passenger Profile & Itinerary</h2>
+        </div>
+        
+        <div class="about-grid">
+          <!-- Column 1: Passenger Manifest / Bio -->
+          <div class="about-manifest-card glass-panel shadow-glow">
+            <div class="card-header-accent">
+              <span class="manifest-no">MANIFEST ID: 9811A2</span>
+              <span class="status-indicator online">SYS_OK</span>
+            </div>
+            
+            <div class="manifest-content">
+              <div class="avatar-polaroid">
+                <div class="polaroid-frame">
+                  <!-- Custom SVG vector avatar of a developer under a sunset -->
+                  <svg class="avatar-svg" viewBox="0 0 200 200">
+                    <defs>
+                      <linearGradient id="sunsetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff7a00" />
+                        <stop offset="100%" stop-color="#7a00ff" />
+                      </linearGradient>
+                    </defs>
+                    <!-- Background sunset sky -->
+                    <circle cx="100" cy="100" r="95" fill="url(#sunsetGrad)"/>
+                    <!-- Mountain silhouette background -->
+                    <path d="M5,170 L40,110 L80,150 L140,80 L195,170 Z" fill="#080c14" opacity="0.8"/>
+                    <!-- Sun disk -->
+                    <circle cx="140" cy="110" r="15" fill="#ffd54f" opacity="0.9"/>
+                    <!-- Developer silhouette in foreground -->
+                    <path d="M60,200 C60,160 80,140 100,140 C120,140 140,160 140,200 Z" fill="#1e293b"/>
+                    <!-- Laptop outline screen glow -->
+                    <path d="M70,195 L130,195 L125,185 L75,185 Z" fill="#0df57e" opacity="0.8"/>
+                    <!-- Headphones -->
+                    <rect x="80" y="145" width="40" height="6" rx="3" fill="#64748b"/>
+                    <circle cx="80" cy="155" r="8" fill="#64748b"/>
+                    <circle cx="120" cy="155" r="8" fill="#64748b"/>
+                  </svg>
+                  <div class="polaroid-label">PATIL, A. // PILOT</div>
+                </div>
+              </div>
+              
+              <div class="manifest-text">
+                <h3>About the Traveler</h3>
+                <p>Hello! I'm a Senior Full Stack Engineer with 7 years of experience building scalable web, cloud, and mobile systems. I have a proven track record across Fintech, Enterprise SaaS, Mobility, and Mobile Device Management (MDM) domains.</p>
+                <p>I specialize in architecting end-to-end features, designing robust API integrations, and accelerating engineering productivity via AI-assisted workflows.</p>
+                
+                <h4 class="manifest-subheading">TECHNICAL COMPARTMENTS</h4>
+                <div class="skill-tags">
+                  <span class="skill-tag">React</span>
+                  <span class="skill-tag">TypeScript</span>
+                  <span class="skill-tag">Ruby on Rails</span>
+                  <span class="skill-tag">Java / Spring Boot</span>
+                  <span class="skill-tag">Node.js</span>
+                  <span class="skill-tag">AWS</span>
+                  <span class="skill-tag">PostgreSQL</span>
+                  <span class="skill-tag">OpenSearch</span>
+                  <span class="skill-tag">REST API Design</span>
+                  <span class="skill-tag">Hotwire</span>
+                  <span class="skill-tag">System Design</span>
+                  <span class="skill-tag">AI Workflows</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Column 2: Interactive Travel Map -->
+          <div class="about-map-card glass-panel shadow-glow">
+            <div class="card-header-accent">
+              <span class="manifest-no">FLIGHT CHART</span>
+              <span class="status-indicator location" id="active-location-name">CURRENT STOP: PUNE</span>
+            </div>
+            
+            <div class="map-container">
+              <!-- World Map Outline SVG with plotted points -->
+              <svg class="world-map-svg" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+                <!-- Grid lines to evoke coordinate chart -->
+                <defs>
+                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+                
+                <!-- World Map Continent Silhouettes (Sleek Minimal Geometries) -->
+                <!-- North America -->
+                <path class="map-land" d="M120,80 L220,110 L280,160 L240,240 L180,260 L140,220 L90,140 Z" />
+                <!-- South America -->
+                <path class="map-land" d="M220,270 L280,310 L290,360 L270,450 L240,430 L220,350 L200,300 Z" />
+                <!-- Africa -->
+                <path class="map-land" d="M430,220 L480,220 L540,270 L560,330 L520,400 L490,410 L470,350 L420,290 L400,240 Z" />
+                <!-- Eurasia / Europe / Asia -->
+                <path class="map-land" d="M400,70 L600,60 L780,100 L840,150 L860,220 L780,260 L680,280 L620,220 L550,210 L480,160 L410,130 Z" />
+                <!-- Australia -->
+                <path class="map-land" d="M780,330 L850,340 L870,380 L840,420 L770,390 L760,350 Z" />
+                
+                <!-- Interactive Flight Lines -->
+                <path class="map-flight-arc" id="arc-pune-frankfurt" d="M 670,230 Q 580,150 495,120" />
+                <path class="map-flight-arc" id="arc-frankfurt-dublin" d="M 495,120 Q 485,110 475,110" />
+                
+                <!-- Coordinate Pin 1: Pune (Home Base) -->
+                <g class="map-pin active" data-location="pune" transform="translate(670, 230)">
+                  <circle class="pin-pulse" r="10"></circle>
+                  <circle class="pin-dot" r="4"></circle>
+                </g>
+                
+                <!-- Coordinate Pin 2: Frankfurt (Preferred Stopover) -->
+                <g class="map-pin" data-location="frankfurt" transform="translate(495, 120)">
+                  <circle class="pin-pulse" r="10"></circle>
+                  <circle class="pin-dot" r="4"></circle>
+                </g>
+                
+                <!-- Coordinate Pin 3: Dublin (Preferred Destination) -->
+                <g class="map-pin" data-location="dublin" transform="translate(475, 110)">
+                  <circle class="pin-pulse" r="10"></circle>
+                  <circle class="pin-dot" r="4"></circle>
+                </g>
+              </svg>
+            </div>
+            
+            <!-- Information Display for Hovered / Clicked Pin -->
+            <div class="map-info-readout" id="map-readout-box">
+              <h4 id="readout-title">Base: Pune, India</h4>
+              <p id="readout-details">This is my primary launchpad where I build scalable enterprise SaaS, Fintech, and cloud systems. I specialize in backend API design (Rails, Node, Spring Boot) and modern frontend architectures (React, TypeScript).</p>
+              <div class="readout-meta">
+                <span>COORDS: 18.5204° N, 73.8567° E</span>
+                <span>STATUS: BASE_CAMP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SECTION 3: TIMELINE / FLIGHT LOG -->
+    <section id="timeline" class="timeline-section">
+      <div class="section-container">
+        
+        <div class="section-header">
+          <span class="section-subtitle">// STOPOVERS & GATE TRANSITS</span>
+          <h2 class="section-title">Professional Flight Path</h2>
+        </div>
+        
+        <!-- Experience Map / Flight Path Timeline -->
+        <div class="timeline-container">
+          
+          <!-- Animated flight route line -->
+          <div class="timeline-route-line-bg"></div>
+          <div class="timeline-route-line-active" id="active-flight-line"></div>
+          
+          <!-- Tiny Airplane that follows scroll -->
+          <div class="scrolling-airplane" id="scroll-airplane">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L14 19v-5.5l8 2.5z"/>
+            </svg>
+          </div>
+          
+          <!-- Stop 1: Senior Application Developer (Left side) -->
+          <div class="timeline-item stop-left" id="timeline-stop-1">
+            <div class="timeline-badge">
+              <span class="stop-number">01</span>
+            </div>
+            
+            <div class="timeline-content-card glass-panel shadow-glow">
+              <div class="card-header-accent">
+                <span class="manifest-no">DEPART: OCT 2019 | ARRIVE: NOV 2021</span>
+                <span class="terminal-gate">GATE 01</span>
+              </div>
+              <div class="card-body-content">
+                <h3 class="role-title">Senior Application Developer</h3>
+                <h4 class="company-name text-blue">VRLab Technologies</h4>
+                <p>Engineered responsive client-facing web and mobile applications using React and React Native. Established modular UI components and visual design tokens to accelerate system development velocity.</p>
+                
+                <ul class="achievements-list">
+                  <li>Developed clean component architectures using React and state management.</li>
+                  <li>Created responsive cross-platform mobile app layouts via React Native.</li>
+                  <li>Optimized asset loading strategies to improve frontend rendering speeds.</li>
+                </ul>
+              </div>
+              
+              <!-- Passport Stamp Overlay -->
+              <div class="passport-stamp stamp-blue" id="stamp-gate-1">
+                <div class="stamp-border">
+                  <span class="stamp-text-top">TRANSIT GRANTED</span>
+                  <span class="stamp-text-center">GATE 01 // OK</span>
+                  <span class="stamp-text-bottom">VRLAB.TECH</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Stop 2: Software Engineer (Right side) -->
+          <div class="timeline-item stop-right" id="timeline-stop-2">
+            <div class="timeline-badge">
+              <span class="stop-number">02</span>
+            </div>
+            
+            <div class="timeline-content-card glass-panel shadow-glow">
+              <div class="card-header-accent">
+                <span class="manifest-no">DEPART: NOV 2021 | ARRIVE: SEP 2023</span>
+                <span class="terminal-gate">GATE 02</span>
+              </div>
+              <div class="card-body-content">
+                <h3 class="role-title">Software Engineer</h3>
+                <h4 class="company-name text-orange">Coditation</h4>
+                <p>Scaled full-stack enterprise solutions, designed optimized cloud integrations, and designed backend APIs. Managed database integrations and built robust fintech workflows.</p>
+                
+                <ul class="achievements-list">
+                  <li>Built and optimized eKYC and onboarding workflows for Fintech platforms using Java / Spring Boot.</li>
+                  <li>Constructed serverless microservices on AWS, handling high throughput requests.</li>
+                  <li>Managed MongoDB/PostgreSQL database integrations for multiple enterprise accounts.</li>
+                </ul>
+              </div>
+              
+              <!-- Passport Stamp Overlay -->
+              <div class="passport-stamp stamp-orange" id="stamp-gate-2">
+                <div class="stamp-border-double">
+                  <span class="stamp-text-top">IMMIGRATION</span>
+                  <span class="stamp-text-center">PASSED SEC</span>
+                  <span class="stamp-text-bottom">CODITATION.2023</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stop 3: Senior Technology Consultant (Left side) -->
+          <div class="timeline-item stop-left" id="timeline-stop-3">
+            <div class="timeline-badge">
+              <span class="stop-number">03</span>
+            </div>
+            
+            <div class="timeline-content-card glass-panel shadow-glow">
+              <div class="card-header-accent">
+                <span class="manifest-no">DEPART: SEP 2023 | ARRIVE: PRESENT</span>
+                <span class="terminal-gate">GATE 03</span>
+              </div>
+              <div class="card-body-content">
+                <h3 class="role-title">Senior Technology Consultant</h3>
+                <h4 class="company-name text-green">Technogise</h4>
+                <p>Leading SaaS platform architecture, implementing complex business logic, and introducing advanced AI workflows. Accelerating engineering velocity and managing apple device MDM workflows.</p>
+                
+                <ul class="achievements-list">
+                  <li>Managing Apple device MDM SaaS platform workflows supporting over 10,000+ client devices.</li>
+                  <li>Improved API response times by 40% using OpenSearch indexing and search optimizations.</li>
+                  <li>Introduced AI-assisted development tools, accelerating velocity to bi-weekly feature releases.</li>
+                </ul>
+              </div>
+              
+              <!-- Passport Stamp Overlay -->
+              <div class="passport-stamp stamp-green" id="stamp-gate-3">
+                <div class="stamp-border">
+                  <span class="stamp-text-top">ENTRY GRANTED</span>
+                  <span class="stamp-text-center">GATE 03 // OK</span>
+                  <span class="stamp-text-bottom">TECHNOGISE.DEV</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SECTION 4: CONTACT / DIGITAL POSTCARD -->
+    <section id="contact" class="contact-section">
+      <div class="section-container">
+        
+        <div class="section-header">
+          <span class="section-subtitle">// DISPATCH A MESSAGE</span>
+          <h2 class="section-title">Send a Postcard</h2>
+        </div>
+        
+        <!-- Postcard flip card container -->
+        <div class="postcard-wrapper">
+          <div class="postcard" id="postcard-card">
+            
+            <!-- Front of the postcard -->
+            <div class="postcard-front glass-panel shadow-glow">
+              <div class="postcard-art-container">
+                <!-- Gorgeous Vector Sunset & Mountain scenery -->
+                <svg class="postcard-illustration" viewBox="0 0 600 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="skyGrad" x1="300" y1="0" x2="300" y2="350" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#0b132b" />
+                      <stop offset="40%" stop-color="#1c2541" />
+                      <stop offset="70%" stop-color="#ff7a00" />
+                      <stop offset="100%" stop-color="#ff007a" />
+                    </linearGradient>
+                    <linearGradient id="mountainGrad" x1="300" y1="200" x2="300" y2="350" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#080c14" />
+                      <stop offset="100%" stop-color="#1e293b" />
+                    </linearGradient>
+                  </defs>
+                  
+                  <!-- Sky background -->
+                  <rect width="600" height="350" rx="12" fill="url(#skyGrad)"/>
+                  
+                  <!-- Grid patterns in background representing digital traveler theme -->
+                  <path d="M 0,50 L 600,50 M 0,100 L 600,100 M 0,150 L 600,150 M 0,200 L 600,200 M 0,250 L 600,250 M 0,300 L 600,300" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                  <path d="M 100,0 L 100,350 M 200,0 L 200,350 M 300,0 L 300,350 M 400,0 L 400,350 M 500,0 L 500,350" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                  
+                  <!-- Glowing sun -->
+                  <circle cx="300" cy="180" r="50" fill="#ffd54f" opacity="0.8"/>
+                  <circle cx="300" cy="180" r="70" fill="#ff7a00" opacity="0.3"/>
+                  
+                  <!-- Distant mountains -->
+                  <path d="M 0,280 L 120,180 L 250,260 L 400,140 L 600,310 L 600,350 L 0,350 Z" fill="url(#mountainGrad)"/>
+                  
+                  <!-- Foreground detailed wireframe grids / terrain lines -->
+                  <path d="M 0,320 Q 150,290 300,320 T 600,320 L 600,350 L 0,350 Z" fill="#0c111d" opacity="0.9"/>
+                  
+                  <!-- Dotted route arc -->
+                  <path d="M 80,280 Q 300,100 520,280" stroke="#0df57e" stroke-width="2" stroke-dasharray="8 6"/>
+                  <circle cx="80" cy="280" r="5" fill="#0df57e"/>
+                  <circle cx="520" cy="280" r="5" fill="#0df57e"/>
+                  
+                  <!-- Flight icon along path -->
+                  <g transform="translate(300, 190) rotate(15)">
+                    <path d="M 0,-10 L 8,-3 L 3,-3 L 4,2 L 1,1 L 2,4 L 0,3 L -2,4 L -1,1 L -4,2 L -3,-3 L -8,-3 Z" fill="#0df57e" transform="scale(1.5)"/>
+                  </g>
+                  
+                  <!-- Beautiful retro text banner -->
+                  <rect x="180" y="270" width="240" height="40" rx="6" fill="rgba(8,12,20,0.85)" stroke="rgba(255,255,255,0.1)"/>
+                  <text x="300" y="295" font-family="'Outfit', sans-serif" font-weight="700" font-size="16" fill="#f3f4f6" text-anchor="middle" letter-spacing="2">GREETINGS FROM PORT 80</text>
+                </svg>
+              </div>
+              <div class="postcard-front-instructions">
+                <span class="badge-hud">POSTAL SERVICE</span>
+                <span class="action-prompt">CLICK POSTCARD TO WRITE MESSAGE ➔</span>
+              </div>
+            </div>
+            
+            <!-- Back of the postcard (Form) -->
+            <div class="postcard-back glass-panel">
+              <form class="postcard-form" id="contact-form" action="#" method="POST">
+                
+                <!-- Left Hand Side: Handwriting fields -->
+                <div class="postcard-left">
+                  <div class="form-instructions">
+                    <span class="handwritten">Write your message below:</span>
+                  </div>
+                  
+                  <div class="form-field">
+                    <label for="form-name" class="handwritten-label">Dear Abhimanyu,</label>
+                    <textarea id="form-msg" name="message" class="handwritten-input" placeholder="Type your message here..." required rows="5"></textarea>
+                  </div>
+                  
+                  <div class="form-field inline-fields">
+                    <span class="handwritten-label">Sincerely,</span>
+                    <input type="text" id="form-name" name="name" class="handwritten-input" placeholder="Your Name" required>
+                  </div>
+                  <div class="form-field">
+                    <input type="email" id="form-email" name="email" class="handwritten-input" placeholder="Your Email Address" required>
+                  </div>
+                </div>
+                
+                <!-- Divider in center -->
+                <div class="postcard-divider"></div>
+                
+                <!-- Right Hand Side: Stamp, Address & Send button -->
+                <div class="postcard-right">
+                  <!-- Dotted Stamp Box -->
+                  <div class="postcard-stamp-box" id="stamp-interactive-trigger">
+                    <div class="inner-dotted-border">
+                      <span class="stamp-prompt">PLACE STAMP HERE</span>
+                      <!-- Stamp graphics (Fills in when clicked or on send) -->
+                      <svg class="stamp-artwork" viewBox="0 0 100 100" id="contact-stamp-graphic">
+                        <rect x="5" y="5" width="90" height="90" rx="4" fill="#080c14" stroke="#ff7a00" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="30" fill="none" stroke="#ff7a00" stroke-width="1" stroke-dasharray="4 2"/>
+                        <polygon points="50,25 57,40 73,43 61,54 65,70 50,62 35,70 39,54 27,43 43,40" fill="#ff7a00"/>
+                        <text x="50" y="90" font-family="'Outfit', sans-serif" font-weight="700" font-size="9" fill="#f3f4f6" text-anchor="middle">NOMAD POST</text>
+                      </svg>
+                    </div>
+                  </div>
+                  
+                  <!-- Postmark over the stamp (Hidden initially, animates visible on success) -->
+                  <div class="postal-cancellation-mark" id="cancellation-mark">
+                    <svg viewBox="0 0 120 120">
+                      <circle cx="60" cy="60" r="45" fill="none" stroke="rgba(239, 68, 68, 0.7)" stroke-width="2"/>
+                      <circle cx="60" cy="60" r="38" fill="none" stroke="rgba(239, 68, 68, 0.7)" stroke-width="1"/>
+                      <line x1="10" y1="40" x2="110" y2="40" stroke="rgba(239, 68, 68, 0.7)" stroke-width="1.5"/>
+                      <line x1="5" y1="60" x2="115" y2="60" stroke="rgba(239, 68, 68, 0.7)" stroke-width="1.5"/>
+                      <line x1="10" y1="80" x2="110" y2="80" stroke="rgba(239, 68, 68, 0.7)" stroke-width="1.5"/>
+                      <text x="60" y="53" font-family="'Outfit', sans-serif" font-size="8" font-weight="600" fill="rgba(239, 68, 68, 0.7)" text-anchor="middle">PUNE (PNQ)</text>
+                      <text x="60" y="73" font-family="'Outfit', sans-serif" font-size="8" font-weight="600" fill="rgba(239, 68, 68, 0.7)" text-anchor="middle">DISPATCHED</text>
+                    </svg>
+                  </div>
+                  
+                  <!-- Address Box -->
+                  <div class="address-container">
+                    <div class="address-line handwritten-label">To:</div>
+                    <div class="address-line handwritten">Abhimanyu Patil</div>
+                    <div class="address-line handwritten">Suite 404, Dev Terminal</div>
+                    <div class="address-line handwritten">World Wide Web</div>
+                  </div>
+                  
+                  <!-- Submit Button -->
+                  <button type="submit" class="submit-postcard-btn" id="postcard-send-btn">
+                    <span>DISPATCH POSTCARD</span>
+                    <svg class="send-plane-icon" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                  </button>
+                  
+                  <!-- Return Button to Flip back -->
+                  <button type="button" class="flip-back-btn" id="postcard-flip-back">
+                    ➔ Show Picture Side
+                  </button>
+                </div>
+                
+              </form>
+            </div>
+            
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Dashboard Footer -->
+  <footer class="dashboard-footer">
+    <div class="footer-left">
+      <span class="footer-meta">SYSTEM: NOMAD-ENGINE_V1.0</span>
+      <span class="footer-meta hide-mobile">// RESPONSIVE GRID ENABLED</span>
+    </div>
+    
+    <div class="footer-links">
+      <a href="https://github.com" target="_blank" rel="noopener noreferrer">GITHUB</a>
+      <span class="footer-separator">•</span>
+      <span class="footer-meta">CO-PILOT CONSOLE</span>
+    </div>
+    
+    <div class="footer-right">
+      <span class="footer-meta">© 2026 ABHIMANYU PATIL</span>
+    </div>
+  </footer>
+
+  <script src="index.js"></script>
+</body>
+</html>
