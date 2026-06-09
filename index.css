@@ -1834,6 +1834,80 @@ textarea.handwritten-input {
   filter: sepia(0) contrast(1) brightness(1);
 }
 
+/* --- MISSION CONTROL TOGGLE --- */
+.mission-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 3px 6px;
+  backdrop-filter: blur(10px);
+  margin-right: 15px;
+}
 
+.mission-toggle-group {
+  display: flex;
+  gap: 4px;
+}
 
+.mission-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text-muted);
+  padding: 3px 8px;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+}
 
+.mission-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mission-btn.active-freelance {
+  color: #070b13;
+  background: var(--accent-orange);
+  box-shadow: 0 0 10px rgba(255, 122, 0, 0.35);
+}
+
+.mission-btn.active-career {
+  color: #070b13;
+  background: var(--accent-blue);
+  box-shadow: 0 0 10px rgba(0, 122, 255, 0.35);
+}
+
+/* Light mode overrides */
+.light-mode .mission-control {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.light-mode .mission-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.light-mode .mission-btn.active-freelance,
+.light-mode .mission-btn.active-career {
+  color: #ffffff;
+}
+
+/* Responsiveness for header navigation items */
+@media (max-width: 600px) {
+  .mission-control {
+    margin-right: 5px;
+    gap: 4px;
+    padding: 2px 4px;
+  }
+  .mission-control .ticker-label {
+    display: none; /* Hide label on mobile to save space */
+  }
+  .mission-btn {
+    font-size: 8px;
+    padding: 2px 5px;
+  }
+}
