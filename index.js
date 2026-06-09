@@ -190,14 +190,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const readoutCoordsText = mapReadoutBox.querySelector('.readout-meta span:first-child');
   const readoutStatusText = mapReadoutBox.querySelector('.readout-meta span:last-child');
 
-  const isCareerPage = document.body.classList.contains('page-career');
-
   const locationsData = {
     pune: {
       title: "Base: Pune, India",
-      details: isCareerPage
-        ? "This is my primary engineering headquarters. Here, I build and architect high-performance, enterprise-grade cloud systems, fintech platforms, and scalable web apps. I focus on system reliability, database tuning, and API design."
-        : "This is my primary launchpad as a freelance website developer in Pune. From here, I work as a freelance senior dev in India building scalable enterprise SaaS, Fintech, and cloud systems. I specialize in API designs and frontend architectures using React.",
+      details: "This is my primary engineering headquarters. Here, I build and architect high-performance, enterprise-grade cloud systems, fintech platforms, and scalable web apps. I focus on system reliability, database tuning, and API design.",
       coords: "COORDS: 18.5204° N, 73.8567° E",
       status: "STATUS: BASE_CAMP"
     },
