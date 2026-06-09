@@ -1805,6 +1805,35 @@ textarea.handwritten-input {
   transition: width 1.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* --- PASSPORT AND POLAROID IMAGES --- */
+.passport-avatar {
+  filter: contrast(1.05) saturate(0.8) brightness(0.95);
+  mix-blend-mode: luminosity;
+  opacity: 0.95;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.passport-avatar:hover {
+  filter: contrast(1.05) saturate(1.1) brightness(1);
+  mix-blend-mode: normal;
+  opacity: 1;
+}
+
+.avatar-img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 2px;
+  filter: sepia(0.15) contrast(1.05) brightness(0.95);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.15);
+  background: #070b13;
+  transition: filter 0.3s ease;
+}
+
+.avatar-img:hover {
+  filter: sepia(0) contrast(1) brightness(1);
+}
+
 
 
 
